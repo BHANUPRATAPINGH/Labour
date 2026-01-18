@@ -1,0 +1,79 @@
+mutation CreateLaborerProfile(
+    $userId: UUID!
+    $availabilityStatus: String!
+    $description: String!
+    $experienceYears: Int
+    $languagesSpoken: [String!]
+    $preferredDailyWage: Int
+    $skills: [String!]
+) @auth(level: USER) {
+  laborerProfile_insert(
+    data: {
+      userId: $userId
+      availabilityStatus: $availabilityStatus
+      description: $description
+      experienceYears: $experienceYears
+      languagesSpoken: $languagesSpoken
+      preferredDailyWage: $preferredDailyWage
+      skills: $skills
+    }
+  ) {
+    id
+  }
+}
+
+query GetJobPosts @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  jobPosts {
+    id
+    title
+    description
+    location
+    dailyWageOffer
+    postedAt
+    requiredSkills
+    employerProfile {
+      companyName
+    }
+  }
+}
+
+mutation ApplyForJob(
+    $jobPostId: UUID!
+    $laborerProfileId: UUID!
+    $coverLetter: String
+) @auth(level: USER) {
+  jobApplication_insert(
+    data: {
+      jobPostId: $jobPostId
+      laborerProfileId: $laborerProfileId
+      applicationDate_expr: "request.time"
+      status: "Pending"
+      coverLetter: $coverLetter
+    }
+  ) {
+    id
+  }
+}
+
+mutation CreateReview(
+    $jobPostId: UUID!
+    $revieweeId: UUID!
+    $reviewerId: UUID!
+    $comment: String!
+    $rating: Int!
+    $jobCompletedDate: Date
+) @auth(level: USER) {
+  review_insert(
+    data: {
+      jobPostId: $jobPostId
+      revieweeId: $revieweeId
+      reviewerId: $reviewerId
+      comment: $comment
+      rating: $rating
+      createdAt_expr: "request.time"
+      jobCompletedDate: $jobCompletedDate
+    }
+  ) {
+    id
+  }
+}

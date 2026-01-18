@@ -1,0 +1,74 @@
+mutation CreateDemoData @auth(level: PUBLIC, insecureReason: "This mutation is for seeding data and does not require authentication") @transaction {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      username: "demouser1",
+      email: "demouser1@example.com",
+      passwordHash: "hashed_password_1",
+      userType: "laborer",
+      createdAt: "2024-01-01T00:00:00Z",
+      location: "New York"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      username: "demouser2",
+      email: "demouser2@example.com",
+      passwordHash: "hashed_password_2",
+      userType: "employer",
+      createdAt: "2024-01-01T00:00:00Z",
+      location: "Los Angeles"
+    }
+  ])
+  laborerProfile_insertMany(data: [
+    {
+      id: "660e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      availabilityStatus: "available",
+      description: "Experienced carpenter",
+      skills: ["carpentry", "plumbing"],
+      preferredDailyWage: 150
+    }
+  ])
+  employerProfile_insertMany(data: [
+    {
+      id: "770e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      companyName: "Acme Corp",
+      contactPerson: "John Doe",
+      industry: "Construction"
+    }
+  ])
+  jobPost_insertMany(data: [
+    {
+      id: "880e8400-e29b-41d4-a716-446655440000",
+      employerProfileId: "770e8400-e29b-41d4-a716-446655440000",
+      title: "Carpenter Needed",
+      description: "Looking for experienced carpenter",
+      location: "New York",
+      dailyWageOffer: 200,
+      status: "open",
+      postedAt: "2024-01-05T00:00:00Z",
+      requiredSkills: ["carpentry"]
+    }
+  ])
+  jobApplication_insertMany(data: [
+    {
+      id: "990e8400-e29b-41d4-a716-446655440000",
+      jobPostId: "880e8400-e29b-41d4-a716-446655440000",
+      laborerProfileId: "660e8400-e29b-41d4-a716-446655440000",
+      applicationDate: "2024-01-06T00:00:00Z",
+      status: "pending"
+    }
+  ])
+  review_insertMany(data: [
+    {
+      id: "aa0e8400-e29b-41d4-a716-446655440000",
+      jobPostId: "880e8400-e29b-41d4-a716-446655440000",
+      revieweeId: "550e8400-e29b-41d4-a716-446655440000",
+      reviewerId: "550e8400-e29b-41d4-a716-446655440001",
+      comment: "Great job!",
+      rating: 5,
+      createdAt: "2024-01-10T00:00:00Z"
+    }
+  ])
+}

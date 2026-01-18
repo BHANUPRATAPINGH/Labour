@@ -1,0 +1,61 @@
+type User @table {
+  username: String!
+  passwordHash: String!
+  userType: String! # LABOURER, EMPLOYER
+  createdAt: Timestamp!
+  email: String
+  phoneNumber: String
+  location: String
+  profilePhotoUrl: String
+}
+
+type LaborerProfile @table {
+  user: User!
+  skills: [String]
+  availabilityStatus: String! # AVAILABLE, UNAVAILABLE
+  description: String!
+  experienceYears: Int
+  preferredDailyWage: Int
+  languagesSpoken: [String]
+}
+
+type EmployerProfile @table {
+  user: User!
+  companyName: String
+  contactPerson: String!
+  industry: String!
+  companyDescription: String
+  website: String
+}
+
+type JobPost @table {
+  employerProfile: EmployerProfile!
+  title: String!
+  description: String!
+  requiredSkills: [String]
+  location: String!
+  dailyWageOffer: Int!
+  postedAt: Timestamp!
+  status: String! # OPEN, CLOSED, FILLED
+  startDate: Date
+  endDate: Date
+  durationDays: Int
+}
+
+type JobApplication @table {
+  laborerProfile: LaborerProfile!
+  jobPost: JobPost!
+  applicationDate: Timestamp!
+  status: String! # PENDING, ACCEPTED, REJECTED, WITHDRAWN
+  coverLetter: String
+}
+
+type Review @table {
+  reviewer: User!
+  reviewee: User!
+  jobPost: JobPost!
+  rating: Int!
+  comment: String!
+  createdAt: Timestamp!
+  jobCompletedDate: Date
+}
